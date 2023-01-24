@@ -1,6 +1,8 @@
 name: 'Silex: Unit test'
 
 on:
+#  schedule:
+#    - cron: '0 0 1 * *'
   push:
     paths:
       - '**.php'
@@ -19,21 +21,17 @@ on:
       - '.github/workflows/**'
 
 jobs:
-  run:    
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      matrix:
-        operating-system: [ubuntu-latest]
-        php-versions: ['7.4', '8.1', '8.2']
-    name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
+  test:
+
+    runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Install PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ matrix.php-versions }}
-    - name: 'Composer: Installing'
-      run: composer install
-    - name: 'PHPUnit: Testing'
-      run: vendor/bin/simple-phpunit
+      - uses: actions/checkout@v2
+      - uses: shivammathur/setup-php@master
+        with:
+          php-version: '7.4'
+          coverage: none
+      - name: 'Composer: Installing'
+        run: composer install
+      - name: 'PHPUnit: Testing'
+        run: vendor/bin/simple-phpunit
