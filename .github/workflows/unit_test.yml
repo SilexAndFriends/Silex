@@ -21,16 +21,19 @@ on:
       - '.github/workflows/**'
 
 jobs:
-  test:
-
-    runs-on: ubuntu-latest
-
+  run:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: ['ubuntu-latest', 'windows-latest', 'macos-latest']
+        php-versions: ['8.0', '8.1', '8.2']
     steps:
-      - uses: actions/checkout@v2
-      - uses: shivammathur/setup-php@master
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
-          coverage: none
+          php-version: ${{ matrix.php-versions }}
+      - name: Check PHP Version
+        run: php -v
       - name: 'Composer: Installing'
         run: composer install
       - name: 'PHPUnit: Testing'
