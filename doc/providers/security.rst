@@ -536,7 +536,7 @@ store the users::
             $this->conn = $conn;
         }
 
-        public function loadUserByUsername($username)
+        public function loadUserByIdentifier($username)
         {
             $stmt = $this->conn->executeQuery('SELECT * FROM users WHERE username = ?', array(strtolower($username)));
 
@@ -553,7 +553,7 @@ store the users::
                 throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
             }
 
-            return $this->loadUserByUsername($user->getUsername());
+            return $this->loadUserByIdentifier($user->getUserIdentifier());
         }
 
         public function supportsClass($class)

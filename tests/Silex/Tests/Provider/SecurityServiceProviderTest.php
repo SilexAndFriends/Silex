@@ -283,7 +283,7 @@ class SecurityServiceProviderTest extends WebTestCase
         $request->headers->set('PHP_AUTH_PW', 'foo');
         $app->handle($request);
         $this->assertInstanceOf(UserInterface::class, $app['user']);
-        $this->assertEquals('fabien', $app['user']->getUsername());
+        $this->assertEquals('fabien', $app['user']->getUserIdentifier());
     }
 
     public function testUserAsServiceString()
@@ -313,7 +313,7 @@ class SecurityServiceProviderTest extends WebTestCase
         $request->headers->set('PHP_AUTH_PW', 'foo');
         $app->handle($request);
         $this->assertInstanceOf(UserInterface::class, $app['user']);
-        $this->assertEquals('fabien', $app['user']->getUsername());
+        $this->assertEquals('fabien', $app['user']->getUserIdentifier());
     }
 
     public function testUserWithNoToken()
@@ -429,7 +429,7 @@ class SecurityServiceProviderTest extends WebTestCase
         $app->get('/', function () use ($app) {
             $user = $app['security.token_storage']->getToken()->getUser();
 
-            $content = is_object($user) ? $user->getUsername() : 'ANONYMOUS';
+            $content = is_object($user) ? $user->getUserIdentifier() : 'ANONYMOUS';
 
             if ($app['security.authorization_checker']->isGranted('IS_AUTHENTICATED_FULLY')) {
                 $content .= 'AUTHENTICATED';
@@ -473,7 +473,7 @@ class SecurityServiceProviderTest extends WebTestCase
 
         $app->get('/', function () use ($app) {
             $user = $app['security.token_storage']->getToken()->getUser();
-            $content = is_object($user) ? $user->getUsername() : 'ANONYMOUS';
+            $content = is_object($user) ? $user->getUserIdentifier() : 'ANONYMOUS';
 
             if ($app['security.authorization_checker']->isGranted('IS_AUTHENTICATED_FULLY')) {
                 $content .= 'AUTHENTICATED';
@@ -519,7 +519,7 @@ class SecurityServiceProviderTest extends WebTestCase
         $app->get('/', function () use ($app) {
             $user = $app['security.token_storage']->getToken()->getUser();
 
-            $content = is_object($user) ? $user->getUsername() : 'ANONYMOUS';
+            $content = is_object($user) ? $user->getUserIdentifier() : 'ANONYMOUS';
 
             return $content;
         })->bind('homepage');

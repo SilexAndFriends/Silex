@@ -45,7 +45,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        return $userProvider->loadUserByUsername($credentials['username']);
+        return $userProvider->loadUserByIdentifier($credentials['username']);
     }
 
     public function checkCredentials($credentials, UserInterface $user)
@@ -61,6 +61,9 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
+        if ($exception->getPrevious() instanceof AuthenticationException) {
+            $exception = $exception->getPrevious();
+        }
         $data = [
             'message' => strtr($exception->getMessageKey(), $exception->getMessageData()),
         ];

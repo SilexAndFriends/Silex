@@ -73,7 +73,7 @@ class ExceptionHandlerTest extends TestCase
 
         $request = Request::create('/foo');
         $response = $app->handle($request);
-        self::assertStringContainsString('No route found for "GET /foo"', html_entity_decode($response->getContent()));
+        self::assertStringContainsString('No route found for "GET http://localhost/foo"', html_entity_decode($response->getContent()));
         self::assertEquals(404, $response->getStatusCode());
     }
 
@@ -100,7 +100,7 @@ class ExceptionHandlerTest extends TestCase
 
         $request = Request::create('/foo', 'POST');
         $response = $app->handle($request);
-        self::assertStringContainsString('No route found for "POST /foo": Method Not Allowed (Allow: GET)', html_entity_decode($response->getContent()));
+        self::assertStringContainsString('No route found for "POST http://localhost/foo": Method Not Allowed (Allow: GET)', html_entity_decode($response->getContent()));
         self::assertEquals(405, $response->getStatusCode());
         self::assertEquals('GET', $response->headers->get('Allow'));
     }

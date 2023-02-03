@@ -66,7 +66,7 @@ AbstractGuardAuthenticator. This requires you to implement six methods:
 
         public function getUser($credentials, UserProviderInterface $userProvider)
         {
-            return $userProvider->loadUserByUsername($credentials['username']);
+            return $userProvider->loadUserByIdentifier($credentials['username']);
         }
 
         public function checkCredentials($credentials, UserInterface $user)

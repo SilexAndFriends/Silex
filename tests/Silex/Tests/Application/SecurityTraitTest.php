@@ -13,6 +13,9 @@ namespace Silex\Tests\Application;
 
 use PHPUnit\Framework\TestCase;
 use Silex\Provider\SecurityServiceProvider;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
+use Symfony\Component\Security\Core\User\InMemoryUser;
 use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -27,18 +30,21 @@ class SecurityTraitTest extends TestCase
             'fabien' => ['ROLE_ADMIN', '$2y$15$lzUNsTegNXvZW3qtfucV0erYBcEqWVeyOmjolB7R1uodsAVJ95vvu'],
         ]);
 
-        $user = new User('foo', 'bar');
+        $user = new InMemoryUser('foo', 'bar');
         $password = 'foo';
         $encoded = $app->encodePassword($user, $password);
 
-        $this->assertTrue(
-            $app['security.encoder_factory']->getEncoder($user)->isPasswordValid($encoded, $password, $user->getSalt())
-        );
+        /**
+         * @var PasswordHasherFactory $passwordFactory
+         */
+        $passwordFactory = $app['security.password_hasher_factory'];
+
+        $this->assertTrue($passwordFactory->getPasswordHasher($user)->verify($encoded, $password));
     }
 
     public function testIsGrantedWithoutTokenThrowsException()
     {
-        $this->expectException(\Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException::class);
+        $this->expectException(AuthenticationCredentialsNotFoundException::class);
         $app = $this->createApplication();
         $app->get('/', function () { return 'foo'; });
         $app->handle(Request::create('/'));

@@ -17,10 +17,13 @@ use Silex\Api\BootableProviderInterface;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Silex\Application;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestMatcher;
+use Symfony\Component\PasswordHasher\Hasher\MessageDigestPasswordHasher;
+use Symfony\Component\PasswordHasher\Hasher\NativePasswordHasher;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
+use Symfony\Component\PasswordHasher\Hasher\Pbkdf2PasswordHasher;
 use Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager;
 use Symfony\Component\Security\Core\Authentication\AuthenticationTrustResolver;
 use Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider;
@@ -31,15 +34,11 @@ use Symfony\Component\Security\Core\Authorization\AccessDecisionManager;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 use Symfony\Component\Security\Core\Authorization\Voter\RoleHierarchyVoter;
-use Symfony\Component\Security\Core\Encoder\EncoderFactory;
-use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
-use Symfony\Component\Security\Core\Encoder\NativePasswordEncoder;
-use Symfony\Component\Security\Core\Encoder\Pbkdf2PasswordEncoder;
 use Symfony\Component\Security\Core\Exception\LogicException;
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\InMemoryUserChecker;
 use Symfony\Component\Security\Core\User\InMemoryUserProvider;
-use Symfony\Component\Security\Core\User\UserChecker;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPasswordValidator;
 use Symfony\Component\Security\Guard\Firewall\GuardAuthenticationListener;
@@ -119,30 +118,26 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
         };
 
         // by default, all users use the digest encoder
-        $app['security.encoder_factory'] = function ($app) {
-            return new EncoderFactory([
-                UserInterface::class => $app['security.default_encoder'],
+        $app['security.password_hasher_factory'] = function ($app) {
+            return new PasswordHasherFactory([
+                UserInterface::class => $app['security.default_password_hasher'],
             ]);
         };
 
-        $app['security.default_encoder'] = function ($app) {
-            return $app['security.encoder.native'];
+        $app['security.default_password_hasher'] = function ($app) {
+            return new NativePasswordHasher(null, null, $app['security.encoder.native.cost']);
         };
 
-        $app['security.encoder.digest'] = function ($app) {
-            return new MessageDigestPasswordEncoder();
+        $app['security.password_hasher.digest'] = function ($app) {
+            return new MessageDigestPasswordHasher();
         };
 
-        $app['security.encoder.native'] = function ($app) {
-            return new NativePasswordEncoder(null, null, $app['security.encoder.native.cost']);
-        };
-
-        $app['security.encoder.pbkdf2'] = function ($app) {
-            return new Pbkdf2PasswordEncoder();
+        $app['security.password_hasher.pbkdf2'] = function ($app) {
+            return new Pbkdf2PasswordHasher();
         };
 
         $app['security.user_checker'] = function ($app) {
-            return new UserChecker();
+            return new InMemoryUserChecker();
         };
 
         $app['security.access_manager'] = function ($app) {
@@ -159,7 +154,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
         $app['security.firewall'] = function ($app) {
             if (isset($app['validator'])) {
                 $app['security.validator.user_password_validator'] = function ($app) {
-                    return new UserPasswordValidator($app['security.token_storage'], $app['security.encoder_factory']);
+                    return new UserPasswordValidator($app['security.token_storage'], $app['security.password_hasher_factory']);
                 };
 
                 $app['validator.validator_service_ids'] = array_merge($app['validator.validator_service_ids'], ['security.validator.user_password' => 'security.validator.user_password_validator']);
@@ -406,7 +401,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
         };
 
         $app['security.trust_resolver'] = function ($app) {
-            return new AuthenticationTrustResolver('Symfony\Component\Security\Core\Authentication\Token\AnonymousToken', 'Symfony\Component\Security\Core\Authentication\Token\RememberMeToken');
+            return new AuthenticationTrustResolver();
         };
 
         $app['security.session_strategy'] = function ($app) {
@@ -661,7 +656,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
                     $app['security.user_provider.'.$name],
                     $app['security.user_checker'],
                     $name,
-                    $app['security.encoder_factory'],
+                    $app['security.password_hasher_factory'],
                     $app['security.hide_user_not_found']
                 );
             };

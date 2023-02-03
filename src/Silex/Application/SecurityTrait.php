@@ -11,6 +11,8 @@
 
 namespace Silex\Application;
 
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -25,15 +27,19 @@ trait SecurityTrait
      * Encodes the raw password.
      *
      * @param UserInterface $user     A UserInterface instance
-     * @param string        $password The password to encode
+     * @param string $password The password to encode
      *
      * @return string The encoded password
      *
      * @throws \RuntimeException when no password encoder could be found for the user
      */
-    public function encodePassword(UserInterface $user, $password)
+    public function encodePassword(UserInterface $user, string $password): string
     {
-        return $this['security.encoder_factory']->getEncoder($user)->encodePassword($password, $user->getSalt());
+        /**
+         * @var PasswordHasherFactory $factory
+         */
+        $factory = $this['security.password_hasher_factory'];
+        return $factory->getPasswordHasher($user)->hash($password);
     }
 
     /**
@@ -46,8 +52,12 @@ trait SecurityTrait
      *
      * @throws AuthenticationCredentialsNotFoundException when the token storage has no authentication token
      */
-    public function isGranted($attributes, $object = null)
+    public function isGranted($attributes, $object = null): bool
     {
-        return $this['security.authorization_checker']->isGranted($attributes, $object);
+        /**
+         * @var AuthorizationCheckerInterface $authChecker
+         */
+        $authChecker = $this['security.authorization_checker'];
+        return $authChecker->isGranted($attributes, $object);
     }
 }
