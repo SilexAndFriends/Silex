@@ -105,7 +105,9 @@ class SilexFormExtension implements FormExtensionInterface
                 }
                 $extension = $this->app[$extension];
             }
-            $this->typeExtensions[$extension->getExtendedType()][] = $extension;
+            foreach ($extension->getExtendedTypes() as $type) {
+                $this->typeExtensions[$type][] = $extension;
+            }
         }
     }
 
