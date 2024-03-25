@@ -52,7 +52,7 @@ class Controller
      *
      * @return Route
      */
-    public function getRoute()
+    public function getRoute(): Route
     {
         return $this->route;
     }
@@ -62,7 +62,7 @@ class Controller
      *
      * @return string
      */
-    public function getRouteName()
+    public function getRouteName(): string
     {
         return $this->routeName;
     }
@@ -74,7 +74,7 @@ class Controller
      *
      * @return Controller $this The current Controller instance
      */
-    public function bind($routeName)
+    public function bind($routeName): Controller
     {
         if ($this->isFrozen) {
             throw new ControllerFrozenException(sprintf('Calling %s on frozen %s instance.', __METHOD__, __CLASS__));

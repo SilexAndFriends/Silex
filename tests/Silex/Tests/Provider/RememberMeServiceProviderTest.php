@@ -11,6 +11,7 @@
 
 namespace Silex\Tests\Provider;
 
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Silex\Application;
 use Silex\Provider\RememberMeServiceProvider;
 use Silex\Provider\SecurityServiceProvider;
@@ -57,7 +58,7 @@ class RememberMeServiceProviderTest extends WebTestCase
         $this->assertNull($client->getCookiejar()->get('REMEMBERME'), 'The REMEMBERME cookie has been removed');
     }
 
-    public function createApplication($authenticationMethod = 'form')
+    public function createApplication($authenticationMethod = 'form'): HttpKernelInterface
     {
         $app = new Application();
 

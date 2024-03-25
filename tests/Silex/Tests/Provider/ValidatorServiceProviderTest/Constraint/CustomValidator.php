@@ -19,13 +19,13 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class CustomValidator extends ConstraintValidator
 {
-    public function isValid($value, Constraint $constraint)
+    public function isValid($value, Constraint $constraint): bool
     {
         // Validate...
         return true;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): bool
     {
         return $this->isValid($value, $constraint);
     }

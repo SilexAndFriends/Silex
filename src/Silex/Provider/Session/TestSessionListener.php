@@ -50,7 +50,7 @@ class TestSessionListener implements EventSubscriberInterface
         $this->testSessionListener->onKernelResponse($event);
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST => ['onKernelRequest', 192],

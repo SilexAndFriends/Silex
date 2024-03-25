@@ -28,5 +28,5 @@ interface ControllerProviderInterface
      *
      * @return ControllerCollection A ControllerCollection instance
      */
-    public function connect(Application $app);
+    public function connect(Application $app): ControllerCollection;
 }

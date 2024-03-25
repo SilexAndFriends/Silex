@@ -83,7 +83,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      *
      * @return Application
      */
-    public function register(ServiceProviderInterface $provider, array $values = [])
+    public function register(ServiceProviderInterface $provider, array $values = []): Application
     {
         $this->providers[] = $provider;
 
@@ -127,7 +127,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      *
      * @return Controller
      */
-    public function match($pattern, $to = null)
+    public function match($pattern, $to = null): Controller
     {
         return $this['controllers']->match($pattern, $to);
     }
@@ -140,7 +140,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      *
      * @return Controller
      */
-    public function get($pattern, $to = null)
+    public function get($pattern, $to = null): Controller
     {
         return $this['controllers']->get($pattern, $to);
     }
@@ -153,7 +153,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      *
      * @return Controller
      */
-    public function post($pattern, $to = null)
+    public function post($pattern, $to = null): Controller
     {
         return $this['controllers']->post($pattern, $to);
     }
@@ -166,7 +166,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      *
      * @return Controller
      */
-    public function put($pattern, $to = null)
+    public function put($pattern, $to = null): Controller
     {
         return $this['controllers']->put($pattern, $to);
     }
@@ -179,7 +179,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      *
      * @return Controller
      */
-    public function delete($pattern, $to = null)
+    public function delete($pattern, $to = null): Controller
     {
         return $this['controllers']->delete($pattern, $to);
     }
@@ -192,7 +192,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      *
      * @return Controller
      */
-    public function options($pattern, $to = null)
+    public function options($pattern, $to = null): Controller
     {
         return $this['controllers']->options($pattern, $to);
     }
@@ -205,7 +205,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      *
      * @return Controller
      */
-    public function patch($pattern, $to = null)
+    public function patch($pattern, $to = null): Controller
     {
         return $this['controllers']->patch($pattern, $to);
     }
@@ -371,7 +371,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      *
      * @return RedirectResponse
      */
-    public function redirect($url, $status = 302)
+    public function redirect($url, $status = 302): RedirectResponse
     {
         return new RedirectResponse($url, $status);
     }
@@ -385,7 +385,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      *
      * @return StreamedResponse
      */
-    public function stream($callback = null, $status = 200, array $headers = [])
+    public function stream($callback = null, $status = 200, array $headers = []): StreamedResponse
     {
         return new StreamedResponse($callback, $status, $headers);
     }
@@ -400,7 +400,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      *
      * @return string Escaped text
      */
-    public function escape($text, $flags = ENT_COMPAT, $charset = null, $doubleEncode = true)
+    public function escape($text, $flags = ENT_COMPAT, $charset = null, $doubleEncode = true): string
     {
         return htmlspecialchars($text, $flags, $charset ?: $this['charset'], $doubleEncode);
     }
@@ -414,7 +414,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      *
      * @return JsonResponse
      */
-    public function json($data = [], $status = 200, array $headers = [])
+    public function json($data = [], $status = 200, array $headers = []): JsonResponse
     {
         return new JsonResponse($data, $status, $headers);
     }
@@ -429,7 +429,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      *
      * @return BinaryFileResponse
      */
-    public function sendFile($file, $status = 200, array $headers = [], $contentDisposition = null)
+    public function sendFile($file, $status = 200, array $headers = [], $contentDisposition = null): BinaryFileResponse
     {
         return new BinaryFileResponse($file, $status, $headers, true, $contentDisposition);
     }
@@ -444,7 +444,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      *
      * @throws \LogicException
      */
-    public function mount($prefix, $controllers)
+    public function mount($prefix, $controllers): Application
     {
         if ($controllers instanceof ControllerProviderInterface) {
             $connectedControllers = $controllers->connect($this);
@@ -485,7 +485,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
      * If you call this method directly instead of run(), you must call the
      * terminate() method yourself if you want the finish filters to be run.
      */
-    public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
+    public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true): Response
     {
         if (!$this->booted) {
             $this->boot();
@@ -499,7 +499,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     /**
      * {@inheritdoc}
      */
-    public function terminate(Request $request, Response $response)
+    public function terminate(Request $request, Response $response): void
     {
         $this['kernel']->terminate($request, $response);
     }

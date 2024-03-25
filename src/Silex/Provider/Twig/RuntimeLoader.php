@@ -33,7 +33,7 @@ class RuntimeLoader implements RuntimeLoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function load($class)
+    public function load($class): ?object
     {
         if (isset($this->mapping[$class])) {
             return $this->container[$this->mapping[$class]];

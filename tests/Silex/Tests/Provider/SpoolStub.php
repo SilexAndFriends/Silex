@@ -29,17 +29,17 @@ class SpoolStub implements \Swift_Spool
     {
     }
 
-    public function isStarted()
+    public function isStarted(): bool
     {
         return count($this->messages) > 0;
     }
 
-    public function queueMessage(\Swift_Mime_SimpleMessage $message)
+    public function queueMessage(\Swift_Mime_SimpleMessage $message): bool
     {
         $this->messages[] = clone $message;
     }
 
-    public function flushQueue(\Swift_Transport $transport, &$failedRecipients = null)
+    public function flushQueue(\Swift_Transport $transport, &$failedRecipients = null): int
     {
         $this->hasFlushed = true;
         $this->messages = [];

@@ -702,9 +702,8 @@ class FooController
 
 class IncorrectControllerCollection implements ControllerProviderInterface
 {
-    public function connect(Application $app)
+    public function connect(Application $app): ControllerCollection
     {
-        return;
     }
 }
 

@@ -41,7 +41,7 @@ abstract class WebTestCase extends TestCase
      *
      * @return HttpKernelInterface
      */
-    abstract public function createApplication();
+    abstract public function createApplication(): HttpKernelInterface;
 
     /**
      * Creates a Client.

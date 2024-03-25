@@ -331,7 +331,7 @@ class DummyFormTypeExtension extends AbstractTypeExtension
         return [FileType::class];
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefined(['image_path']);
     }

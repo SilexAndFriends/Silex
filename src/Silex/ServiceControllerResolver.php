@@ -39,7 +39,7 @@ class ServiceControllerResolver implements ControllerResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function getController(Request $request)
+    public function getController(Request $request): callable|false
     {
         $controller = $request->attributes->get('_controller', null);
 

@@ -28,7 +28,7 @@ trait TranslationTrait
      *
      * @return string The translated string
      */
-    public function trans($id, array $parameters = [], $domain = 'messages', $locale = null)
+    public function trans($id, array $parameters = [], $domain = 'messages', $locale = null): string
     {
         return $this['translator']->trans($id, $parameters, $domain, $locale);
     }
@@ -44,7 +44,7 @@ trait TranslationTrait
      *
      * @return string The translated string
      */
-    public function transChoice($id, $number, array $parameters = [], $domain = 'messages', $locale = null)
+    public function transChoice($id, $number, array $parameters = [], $domain = 'messages', $locale = null): string
     {
         $parameters['%count%'] ??= $number;
         return $this->trans($id, $parameters, $domain, $locale);

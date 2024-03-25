@@ -22,7 +22,7 @@ class Custom extends Constraint
     public $table;
     public $field;
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'test.custom.validator';
     }

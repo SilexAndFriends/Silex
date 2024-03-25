@@ -32,7 +32,7 @@ trait TwigTrait
      *
      * @return Response A Response instance
      */
-    public function render($view, array $parameters = [], Response $response = null)
+    public function render($view, array $parameters = [], Response $response = null): Response
     {
         $twig = $this['twig'];
 
@@ -58,7 +58,7 @@ trait TwigTrait
      *
      * @return string The rendered view
      */
-    public function renderView($view, array $parameters = [])
+    public function renderView($view, array $parameters = []): string
     {
         return $this['twig']->render($view, $parameters);
     }

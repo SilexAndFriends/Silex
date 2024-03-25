@@ -14,6 +14,7 @@ namespace Silex\Tests;
 use Silex\Application;
 use Silex\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * Functional test cases.
@@ -22,7 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class WebTestCaseTest extends WebTestCase
 {
-    public function createApplication()
+    public function createApplication(): HttpKernelInterface
     {
         $app = new Application();
 

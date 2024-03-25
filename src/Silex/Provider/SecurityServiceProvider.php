@@ -17,6 +17,7 @@ use Silex\Api\BootableProviderInterface;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Silex\Application;
+use Silex\ControllerCollection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestMatcher;
@@ -694,7 +695,7 @@ class SecurityServiceProvider implements ServiceProviderInterface, EventListener
         $dispatcher->addSubscriber($app['security.firewall']);
     }
 
-    public function connect(Application $app)
+    public function connect(Application $app): ControllerCollection
     {
         $controllers = $app['controllers_factory'];
         foreach ($this->fakeRoutes as $route) {

@@ -48,7 +48,7 @@ class Route extends BaseRoute
      *
      * @return Route $this The current Route instance
      */
-    public function run($to)
+    public function run($to): Route
     {
         $this->setDefault('_controller', $to);
 
@@ -63,7 +63,7 @@ class Route extends BaseRoute
      *
      * @return Route $this The current route instance
      */
-    public function assert($variable, $regexp)
+    public function assert($variable, $regexp): Route
     {
         $this->setRequirement($variable, $regexp);
 
@@ -78,7 +78,7 @@ class Route extends BaseRoute
      *
      * @return Route $this The current Route instance
      */
-    public function value($variable, $default)
+    public function value($variable, $default): Route
     {
         $this->setDefault($variable, $default);
 
@@ -93,7 +93,7 @@ class Route extends BaseRoute
      *
      * @return Route $this The current Route instance
      */
-    public function convert($variable, $callback)
+    public function convert($variable, $callback): Route
     {
         $converters = $this->getOption('_converters');
         $converters[$variable] = $callback;
@@ -109,7 +109,7 @@ class Route extends BaseRoute
      *
      * @return Route $this The current Route instance
      */
-    public function method($method)
+    public function method($method): Route
     {
         $this->setMethods(explode('|', $method));
 
@@ -123,7 +123,7 @@ class Route extends BaseRoute
      *
      * @return Route $this The current Route instance
      */
-    public function host($host)
+    public function host($host): Route
     {
         $this->setHost($host);
 
@@ -135,7 +135,7 @@ class Route extends BaseRoute
      *
      * @return Route $this The current Route instance
      */
-    public function requireHttp()
+    public function requireHttp(): Route
     {
         $this->setSchemes('http');
 
@@ -147,7 +147,7 @@ class Route extends BaseRoute
      *
      * @return Route $this The current Route instance
      */
-    public function requireHttps()
+    public function requireHttps(): Route
     {
         $this->setSchemes('https');
 
@@ -161,7 +161,7 @@ class Route extends BaseRoute
      *
      * @return Route $this The current Route instance
      */
-    public function before($callback)
+    public function before($callback): Route
     {
         $callbacks = $this->getOption('_before_middlewares');
         $callbacks[] = $callback;
@@ -177,7 +177,7 @@ class Route extends BaseRoute
      *
      * @return Route $this The current Route instance
      */
-    public function after($callback)
+    public function after($callback): Route
     {
         $callbacks = $this->getOption('_after_middlewares');
         $callbacks[] = $callback;
@@ -193,7 +193,7 @@ class Route extends BaseRoute
      *
      * @return Route $this The current Route instance
      */
-    public function when($condition)
+    public function when($condition): Route
     {
         $this->setCondition($condition);
 

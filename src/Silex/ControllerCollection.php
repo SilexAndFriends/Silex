@@ -90,7 +90,7 @@ class ControllerCollection
      *
      * @return Controller
      */
-    public function match($pattern, $to = null)
+    public function match($pattern, $to = null): Controller
     {
         $route = clone $this->defaultRoute;
         $route->setPath($pattern);
@@ -108,7 +108,7 @@ class ControllerCollection
      *
      * @return Controller
      */
-    public function get($pattern, $to = null)
+    public function get($pattern, $to = null): Controller
     {
         return $this->match($pattern, $to)->method('GET');
     }
@@ -121,7 +121,7 @@ class ControllerCollection
      *
      * @return Controller
      */
-    public function post($pattern, $to = null)
+    public function post($pattern, $to = null): Controller
     {
         return $this->match($pattern, $to)->method('POST');
     }
@@ -134,7 +134,7 @@ class ControllerCollection
      *
      * @return Controller
      */
-    public function put($pattern, $to = null)
+    public function put($pattern, $to = null): Controller
     {
         return $this->match($pattern, $to)->method('PUT');
     }
@@ -147,7 +147,7 @@ class ControllerCollection
      *
      * @return Controller
      */
-    public function delete($pattern, $to = null)
+    public function delete($pattern, $to = null): Controller
     {
         return $this->match($pattern, $to)->method('DELETE');
     }
@@ -160,7 +160,7 @@ class ControllerCollection
      *
      * @return Controller
      */
-    public function options($pattern, $to = null)
+    public function options($pattern, $to = null): Controller
     {
         return $this->match($pattern, $to)->method('OPTIONS');
     }
@@ -173,7 +173,7 @@ class ControllerCollection
      *
      * @return Controller
      */
-    public function patch($pattern, $to = null)
+    public function patch($pattern, $to = null): Controller
     {
         return $this->match($pattern, $to)->method('PATCH');
     }
@@ -198,7 +198,7 @@ class ControllerCollection
      *
      * @return RouteCollection A RouteCollection instance
      */
-    public function flush()
+    public function flush(): RouteCollection
     {
         if (null === $this->routesFactory) {
             $routes = new RouteCollection();

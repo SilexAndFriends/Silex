@@ -11,6 +11,7 @@
 
 namespace Silex\Tests\Provider;
 
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Silex\Application;
 use Silex\Provider\SecurityServiceProvider;
 use Silex\Provider\SessionServiceProvider;
@@ -379,7 +380,7 @@ class SecurityServiceProviderTest extends WebTestCase
         ]);
     }
 
-    public function createApplication($authenticationMethod = 'form')
+    public function createApplication($authenticationMethod = 'form'): HttpKernelInterface
     {
         $app = new Application();
         $app->register(new SessionServiceProvider());
