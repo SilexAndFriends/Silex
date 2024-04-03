@@ -12,7 +12,7 @@
 namespace Silex;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
+use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 /**
@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
  *
  * @author Romain Neutron <imprec@gmail.com>
  */
-class AppArgumentValueResolver implements ValueResolverInterface
+class AppArgumentValueResolver implements ArgumentValueResolverInterface
 {
     private $app;
 
