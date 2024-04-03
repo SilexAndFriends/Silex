@@ -60,9 +60,9 @@ class Controller
     /**
      * Gets the controller's route name.
      *
-     * @return string
+     * @return string|null
      */
-    public function getRouteName(): string
+    public function getRouteName(): ?string
     {
         return $this->routeName;
     }
